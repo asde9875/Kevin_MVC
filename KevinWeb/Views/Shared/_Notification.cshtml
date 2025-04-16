@@ -1,0 +1,63 @@
+﻿    <!-- Toastr Notification Logic -->
+@if (TempData["success"] != null || TempData["error"] != null || TempData["info"] != null || TempData["warning"] != null)
+{
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "4000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+
+        @if (TempData["success"] != null)
+        {
+            <text>toastr.success('@TempData["success"]');</text>
+        }
+        @if (TempData["error"] != null)
+        {
+            <text>toastr.error('@TempData["error"]');</text>
+        }
+        @if (TempData["info"] != null)
+        {
+            <text>toastr.info('@TempData["info"]');</text>
+        }
+        @if (TempData["warning"] != null)
+        {
+            <text>toastr.warning('@TempData["warning"]');</text>
+        }
+        });
+    </script>
+
+    @* The success message that ChatGPT provide*@
+    @* <div class="alert alert-success alert-dismissible fade show" id="success-alert" role="alert"> *@
+    @*     <i class="bi bi-check-circle"></i> @TempData["success"] *@
+    @*     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> *@
+    @* </div> *@
+
+    @* <script> *@
+    @*     // Automatically hide the alert after 4 seconds *@
+    @*     setTimeout(() => { *@
+    @*         const alert = document.getElementById('success-alert'); *@
+    @*         if (alert) { *@
+    @*             alert.classList.remove('show'); // Hide the alert visually *@
+    @*             alert.classList.add('fade'); // Add fade effect *@
+    @*             setTimeout(() => alert.remove(), 500); // Fully remove the alert after fade-out *@
+    @*         } *@
+    @*     }, 4000); // 4000ms = 4 seconds *@
+    @* </script> *@
+
+}

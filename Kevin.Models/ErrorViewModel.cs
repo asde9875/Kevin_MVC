@@ -1,4 +1,4 @@
-namespace KevinWeb.Models
+namespace Kevin.Models
 {
     public class ErrorViewModel
     {
@@ -7,3 +7,4 @@ namespace KevinWeb.Models
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
     }
 }
+

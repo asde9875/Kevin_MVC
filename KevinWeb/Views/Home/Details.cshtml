@@ -1,0 +1,222 @@
+﻿@model Kevin.Models.Entities.ShoppingCartEntity
+
+<form method="post">
+    <div class="card shadow border-0 mt-4 mb-4">
+        <div class="card-header bg-secondary bg-gradient text-light py-4">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h3 class="text-white text-uppercase">@Model.Product.Title</h3>
+                    <p class="text-white-50 fw-semibold mb-0">by @Model.Product.Author</p>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="py-3">
+                <div class="row">
+                    <div class="col-6 col-md-2 offset-lg-1 pb-1">
+                        <a asp-action="Index" class="btn btn-outline-primary bg-gradient mb-5 fw-semibold btn-sm text-uppercase">
+                            <small>Back to home</small>
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-lg-3 offset-lg-1 text-center mb-3">
+
+                        @if (Model.Product.ImageUrl != null && Model.Product.ImageUrl.Count() > 0){
+                            <div id="carouselExampleIndicators" class="carousel slide image-container" data-bs-ride="carousel">
+                                <!-- Carousel Indicators -->
+                                <div class="carousel-indicators">
+                                    <!-- Cover Image Indicator -->
+                                    @if (!string.IsNullOrEmpty(Model.Product.ImageUrl))
+                                    {
+                                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
+                                                class="active" aria-current="true" aria-label="Slide 1"></button>
+                                    }
+
+                                    <!-- Product Images Indicators -->
+                                    @foreach (var imageWithIndex in Model.Product.ProductImages
+                                   .Select((image, index) => new { ProductImage = image, Index = index }))
+                                    {
+                                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="@(imageWithIndex.Index + 1)"
+                                                aria-label="Slide @(imageWithIndex.Index + 2)"></button>
+                                    }
+                                </div>
+
+                                <!-- Carousel Items -->
+                                <div class="carousel-inner">
+                                    <!-- Cover Image -->
+                                    @if (!string.IsNullOrEmpty(Model.Product.ImageUrl))
+                                    {
+                                        <div class="carousel-item active">
+                                            <div class="image-container">
+                                                <img class="d-block w-100" src="@Model.Product.ImageUrl" alt="Cover Image">
+                                            </div>
+                                        </div>
+                                    }
+
+                                    <!-- Product Images -->
+                                    @foreach (var imageWithIndex in Model.Product.ProductImages
+                                   .Select((image, index) => new { ProductImage = image, Index = index }))
+                                    {
+                                        <div class="carousel-item @(string.IsNullOrEmpty(Model.Product.ImageUrl) && imageWithIndex.Index == 0 ? "active" : "")">
+                                            <div class="image-container">
+                                                <img class="d-block w-100" src="@imageWithIndex.ProductImage.ImageUrl" alt="Product Image @(imageWithIndex.Index + 1)">
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+
+                                <!-- Carousel Controls -->
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
+
+                        }
+                        else
+                        {
+                            <div class="image-container">
+                                <img src="https://placehold.co/500x600/png" class="card-img-top rounded" alt="Placeholder Image" />
+                            </div>
+                        }
+                    </div>
+
+                    @* 
+                        <div class="image-container">
+                            @if (Model.Product.ImageUrl != null && Model.Product.ImageUrl.Count() > 0)
+                            {
+                                <img src="@Model.Product.ImageUrl" class="card-img-top rounded" />
+                            }
+                            else
+                            {
+                                <img src="https://placehold.co/500x600/png" class="card-img-top rounded" />
+                            }
+                        </div> *@
+                    <div class="col-12 col-lg-6 offset-lg-1">
+
+                        <div class="col-12 col-md-6 pb-4">
+                            <span class="badge">@Model.Product.Category.Name</span>
+                        </div>
+                        <div class="row ps-2">
+                            <h6 class="text-dark text-opacity-50 ">ISBN : @Model.Product.ISBN</h6>
+                        </div>
+                        <div class="row ps-2">
+                            <h6 class="text-dark text-opacity-50  pb-2">
+                                List Price:
+                                <span class="text-decoration-line-through">
+                                    @Model.Product.ListPrice.ToString("c")
+                                </span>
+                            </h6>
+                        </div>
+                        <div class="row text-center ps-2">
+                            <div class="p-1 col-3 col-lg-2 bg-white border-bottom">
+                                <div class="text-dark text-opacity-50 fw-semibold">Quantity</div>
+                            </div>
+                            <div class="p-1 col-3 col-lg-2 bg-white border-bottom">
+                                <div class="text-dark text-opacity-50 fw-semibold">1-50</div>
+                            </div>
+                            <div class="p-1 col-3 col-lg-2 bg-white border-bottom">
+                                <div class="text-dark text-opacity-50 fw-semibold">51-100</div>
+                            </div>
+                            <div class="p-1 col-3 col-lg-2 bg-white border-bottom">
+                                <div class="text-dark text-opacity-50 fw-semibold">100+</div>
+                            </div>
+                        </div>
+                        <div class="row text-center ps-2">
+                            <div class="p-1 col-3 col-lg-2 bg-white text-warning fw-bold">
+                                <div>Price</div>
+                            </div>
+                            <div class="p-1 col-3 col-lg-2 bg-white text-warning fw-bold">
+                                <div>@Model.Product.Price.ToString("c")</div>
+                            </div>
+                            <div class="p-1 col-3 col-lg-2 bg-white text-warning fw-bold">
+                                <div>@Model.Product.Price50.ToString("c")</div>
+                            </div>
+                            <div class="p-1 col-3 col-lg-2 bg-white text-warning fw-bold">
+                                <div>@Model.Product.Price100.ToString("c")</div>
+                            </div>
+                        </div>
+                        <div class="row pl-2 my-3">
+                            <p class="text-secondary lh-sm">@Html.Raw(Model.Product.Description)</p>
+                        </div>
+                        <div class="row pl-2 mb-3">
+                            <div class="col-md-4">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text bg-primary text-white border-0 fw-semibold"
+                                          id="inputGroup-sizing-default">
+                                        Count
+                                    </span>
+                                    <input asp-for="Count" type="number" value="1" class="form-control text-end"
+                                           aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-6 pb-1">
+                                <button type="submit"
+                                        class="btn btn-primary bg-gradient  w-100 py-2 text-uppercase fw-semibold">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<style>
+    .image-container {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        max-width: 400px; /* Set a reasonable width */
+        height: auto; /* Ensure the height adjusts automatically */
+        margin: 0 auto; /* Center align if needed */
+    }
+
+        .image-container img {
+            width: 100%;
+            height: auto;
+            transition: transform 0.2s ease-in-out, transform-origin 0.2s ease-in-out;
+        }
+
+        /* Zoom effect on hover */
+        .image-container:hover img {
+            transform: scale(1.5); /* Increase the zoom factor here */
+        }
+</style>
+
+<script>
+        document.addEventListener("DOMContentLoaded", function () {
+        const imageContainers = document.querySelectorAll(".image-container");
+
+        imageContainers.forEach(imageContainer => {
+            const image = imageContainer.querySelector("img");
+
+            // Update `transform-origin` on mouse movement
+            imageContainer.addEventListener("mousemove", (e) => {
+                const rect = imageContainer.getBoundingClientRect();
+                const xPercent = ((e.clientX - rect.left) / rect.width) * 100;
+                const yPercent = ((e.clientY - rect.top) / rect.height) * 100;
+
+                image.style.transformOrigin = `${xPercent}% ${yPercent}%`;
+            });
+
+            // Reset the zoom origin on mouse leave
+            imageContainer.addEventListener("mouseleave", () => {
+                image.style.transformOrigin = "center center";
+            });
+        });
+    });
+
+</script>

@@ -1,0 +1,161 @@
+﻿@model Kevin.Models.Entities.ShoppingCartVM
+
+<form method="post">
+    <br />
+    <div class="card shadow border-0">
+        <div class="card-header bg-secondary bg-gradient text-light ml-0 py-4">
+            <div class="row px-4">
+                <div class="col-6">
+                    <h5 class="pt-2 text-white">
+                        Shopping Cart
+                    </h5>
+                </div>
+
+            </div>
+        </div>
+        <div class="card-body my-4">
+            <div class="row">
+            </div>
+            <div class="row mb-3 pb-3">
+                <div class="col-md-2 offset-md-1">
+                    <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="btn btn-outline-primary text-uppercase mb-5 btn-sm"><small>Continue Shopping</small></a>
+                </div>
+                <div class="col-md-10 offset-md-1">
+
+                    @foreach(var item in Model.ShoppingCartList){
+                    <div class="row border-bottom pb-3">
+                        <div class="d-none d-lg-block col-lg-1 text-center py-2">
+                            @* <img src="@item.Product.ImageUrl" class="rounded" width="100%" /> *@
+                                @if (item.Product.ImageUrl != null && item.Product.ImageUrl.Count() > 0)
+                                {
+                                    <img src="@item.Product.ImageUrl" class="card-img-top rounded" />
+                                }
+                                else
+                                {
+                                    <img src="https://placehold.co/500x600/png" class="card-img-top rounded" />
+                                }
+
+                        </div>
+                        <div class="col-12 col-lg-6 pt-md-3">
+                                <h5 class="text-uppercase text-secondary"><strong>@item.Product.Title</strong></h5>
+                                <p><small>@Html.Raw(item.Product.Description)</small></p>
+                        </div>
+                        <div class="col-12  col-lg-5 text-center row">
+                            <div class="col-3 text-md-right pt-2 pt-md-4">
+                                <h6 class="fw-semibold">
+                                        @item.Price.ToString("c")
+                                    <span class="text-muted">&nbsp;x&nbsp;</span>@item.Count
+                                </h6>
+                            </div>
+                                <div class="col-6 col-sm-4 col-lg-6 pt-2">
+                                    <div class="w-75 btn-group" role="group">
+                                        <button class="btn btn-outline-primary bg-gradient py-2 btn-plus" data-id="@item.Id">
+                                            <i class="bi bi-plus-square"></i>
+                                        </button>
+                                        &nbsp;
+                                        <button class="btn btn-outline-primary bg-gradient py-2 btn-minus" data-id="@item.Id">
+                                            <i class="bi bi-dash-square"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-3 col-sm-4 col-lg-2 offset-lg-1 text-right pt-2">
+                                    <button class="btn btn-danger bg-gradient py-2 btn-remove" data-id="@item.Id">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+                                </div>
+
+                        </div>
+
+                    </div>
+
+                    }
+
+
+                </div>
+            </div>
+            <div class="card-footer bg-white border-0">
+                <div class="row">
+                    <div class="col-md-4 offset-md-4">
+                        <ul class="list-group mb-4">
+                            <li class="d-flex justify-content-between align-items-center">
+                                <h5 class="text-dark fw-semibold text-uppercase"> Total (USD)</h5>
+                                <h4 class="text-dark fw-bolder">@Model.OrderHeader.OrderTotal.ToString("c")</h4>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 offset-md-5">
+                        @if (Model.OrderHeader.OrderTotal == 0)
+                        {
+                            <!-- Disabled Summary Button -->
+                            <button class="btn btn-primary border-0 bg-gradient w-100 py-2" disabled>Summary</button>
+                        }
+                        else
+                        {
+                            <!-- Enabled Summary Button -->
+                            <a asp-action="Summary" class="btn btn-primary border-0 bg-gradient w-100 py-2">Summary</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+</form>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Handle Plus button click
+            $(document).on('click', '.btn-plus', function () {
+                var cartId = $(this).data('id');
+                $.ajax({
+                    url: '/Cart/Plus',
+                    type: 'POST',
+                    data: { cartId: cartId },
+                    success: function () {
+                        updateCartCount(); // Call global function to update cart count
+                        location.reload(); // Optionally reload the page to refresh cart
+                    },
+                    error: function () {
+                        console.error('Failed to increase cart item count');
+                    }
+                });
+            });
+
+            // Handle Minus button click
+            $(document).on('click', '.btn-minus', function () {
+                var cartId = $(this).data('id');
+                $.ajax({
+                    url: '/Cart/Minus',
+                    type: 'POST',
+                    data: { cartId: cartId },
+                    success: function () {
+                        updateCartCount(); // Call global function to update cart count
+                        location.reload(); // Optionally reload the page to refresh cart
+                    },
+                    error: function () {
+                        console.error('Failed to decrease cart item count');
+                    }
+                });
+            });
+
+            // Handle Remove button click
+            $(document).on('click', '.btn-remove', function () {
+                var cartId = $(this).data('id');
+                $.ajax({
+                    url: '/Cart/Remove',
+                    type: 'POST',
+                    data: { cartId: cartId },
+                    success: function () {
+                        updateCartCount(); // Call global function to update cart count
+                        location.reload(); // Optionally reload the page to refresh cart
+                    },
+                    error: function () {
+                        console.error('Failed to remove cart item');
+                    }
+                });
+            });
+        });
+    </script>
+}
+

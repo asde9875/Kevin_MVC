@@ -1,0 +1,26 @@
+﻿@model int
+
+<div class="container row pt-4">
+    <div class="col-12 text-center">
+        <h1 class="text-primary text-center">Order Placed Successfully!</h1>
+        Your Order Number is: @Model <br /><br />
+        <!-- Animation Container -->
+        <div id="order-animation" style="width: 800px; margin: auto;"></div>
+
+        @* <img src="~/images/lawn_leaf.jpg" width="65%" /> *@
+    </div>
+</div>
+
+<!-- Include Lottie Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
+
+<script>
+    // Load the Lottie animation
+    lottie.loadAnimation({
+        container: document.getElementById('order-animation'), // ID of the element to render the animation
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: '/animations/order-confirmation.json' // Replace with the path to your animation file
+    });
+</script>

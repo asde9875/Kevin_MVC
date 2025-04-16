@@ -1,0 +1,248 @@
+﻿@model Kevin.Models.Entities.ProductsEntity
+
+
+<div class="card shadow border-0 my-4">
+	<div class="card-header bg-secondary bg-gradient ml-0 py-3">
+		<div class="row">
+			<div class="col-12 text-center">
+				<h2 class="text-white py-2">Edit Product</h2>
+			</div>
+		</div>
+	</div>
+	<div class="card-body p-4">
+		<form method="post" class="row" enctype="multipart/form-data">
+			@* if you have a category Id then you will need to use the hidden value *@
+			<input asp-for="Id" hidden />
+
+			<div class="row">
+				<div class="col-10">
+					<div class="border p-3 mt-4">
+						@* <div asp-validation-summary="All" class="text-danger"></div> *@
+						<div class="form-floating py-2 col-12">
+							<input asp-for="Title" class="form-control border-0 shadow" />
+							<label asp-for="Title" class="ms-2"></label>
+							<span asp-validation-for="Title" class="text-danger"></span>
+						</div>
+						<div class="form-floating py-2 col-12">
+							<label asp-for="Description" class="ms-2"></label>
+							<textarea asp-for="Description" class="form-control border-0 shadow"></textarea>
+							@* <span asp-validation-for="Description" class="text-danger"></span> *@
+						</div>
+						<div class="form-floating py-2 col-12">
+							<input asp-for="ISBN" class="form-control border-0 shadow" />
+							<label asp-for="ISBN" class="ms-2"></label>
+							<span asp-validation-for="ISBN" class="text-danger"></span>
+						</div>
+						<div class="form-floating py-2 col-12">
+							<input asp-for="Author" class="form-control border-0 shadow" />
+							<label asp-for="Author" class="ms-2"></label>
+							<span asp-validation-for="Author" class="text-danger"></span>
+						</div>
+						<div class="form-floating py-2 col-12">
+							<input asp-for="ListPrice" class="form-control border-0 shadow" />
+							<label asp-for="ListPrice" class="ms-2"></label>
+							<span asp-validation-for="ListPrice" class="text-danger"></span>
+						</div>
+						<div class="form-floating py-2 col-12">
+							<input asp-for="Price" class="form-control border-0 shadow" />
+							<label asp-for="Price" class="ms-2"></label>
+							<span asp-validation-for="Price" class="text-danger"></span>
+						</div>
+						<div class="form-floating py-2 col-12">
+							<input asp-for="Price50" class="form-control border-0 shadow" />
+							<label asp-for="Price50" class="ms-2"></label>
+							<span asp-validation-for="Price50" class="text-danger"></span>
+						</div>
+						<div class="form-floating py-2 col-12">
+							<input asp-for="Price100" class="form-control border-0 shadow" />
+							<label asp-for="Price100" class="ms-2"></label>
+							<span asp-validation-for="Price100" class="text-danger"></span>
+						</div>
+						<div class="py-2 col-12">
+							<label asp-for="CategoryId" class="ms-2" style="color: darkgray;">CategoryId</label>
+							<select asp-for="CategoryId" asp-items="@(ViewData["CategoryList"] as IEnumerable<SelectListItem>)" class="form-select border-0 shadow">
+								<option disabled selected>Select Category</option>
+							</select>
+							<span asp-validation-for="CategoryId" class="text-danger"></span>
+						</div>
+						<div class="form-floating py-2 col-12">
+							<input type="file" name="ImageUrl" class="form-control border-0 shadow" />
+							<label asp-for="ImageUrl" class="ms-2">Cover Image</label>
+						</div>
+						<div class="form-floating py-2 col-12">
+							<input type="file" name="ProductImages" class="form-control border-0 shadow" multiple />
+							<label asp-for="ProductImages" class="ms-2">Products Image</label>
+						</div>
+
+						<div class="row mt-3">
+							<div class="col-6 col-md-3">
+								<button type="submit" class="btn btn-primary form-control">Update</button>
+							</div>
+							<div class="col-6 col-md-3">
+								<a asp-controller="Product" asp-action="Index" class="btn btn-outline-primary form-control">
+									Back to List
+								</a>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<div class="col-2">
+					<style>
+						.btn-group-xs > .btn, .btn-xs {
+						padding: 1px 5px;
+						font-size: 12px;
+						line-height: 1.5;
+						border-radius: 3px;
+						}
+					</style>
+
+					@if (Model.ImageUrl.Any())
+					{ 
+						<div class="position-relative">
+							<label for="coverImage" style="font-size: 0.9rem; font-weight: bold; display: block; text-align: center; margin-bottom: 5px;">Cover Image</label>
+							<img id="coverImage"
+								 src="@Model.ImageUrl"
+								 width="100%"
+								 style="border-radius:5px; border:1px solid #bbb9b9; cursor: pointer;"
+								 class="image-tooltip-trigger"
+								 data-img="@Model.ImageUrl"/>
+							<div class="alert alert-warning alert-dismissible fade show text-center mt-3" role="alert" style="font-size: 0.85rem; line-height: 1.2;">
+								<strong>Warning!</strong> Please use the <strong>'Cover Image'</strong> file upload below to change this image.
+								<button type="button" class="btn-close btn-xs" data-bs-dismiss="alert" aria-label="Close"></button>
+							</div>
+						</div>
+					}
+					else
+					{
+						<div class="position-relative">
+							<label for="coverImage" style="font-size: 0.9rem; font-weight: bold; display: block; text-align: center; margin-bottom: 5px;">Cover Image</label>
+							<img id="coverImage"
+								 src="https://placehold.co/500x600/png"
+								 width="100%"
+								 style="border-radius:5px; border:1px solid #bbb9b9; cursor: pointer;"
+								 class="image-tooltip-trigger"/>
+							<div class="alert alert-warning alert-dismissible fade show text-center mt-3" role="alert" style="font-size: 0.85rem; line-height: 1.2;">
+								<strong>Warning!</strong> Please use the <strong>'Cover Image'</strong> file upload below to change this image.
+								<button type="button" class="btn-close btn-xs" data-bs-dismiss="alert" aria-label="Close"></button>
+							</div>
+						</div>
+					}
+
+					<!-- Add space -->
+					<div style="margin-top: 20px;"></div>
+
+					<label for="ProductImage" style="font-size: 0.9rem; font-weight: bold; display: block; text-align: center; margin-bottom: 5px;">Product Image</label>
+					@if (Model.ProductImages.Any())
+					{
+						foreach (var image in Model.ProductImages)
+						{
+							<div class="border p-1 m-2 text-center">
+								<img src="@image.ImageUrl" width="100%"
+									 style="border-radius:5px; border:1px solid #bbb9b9" 
+									 class="image-tooltip-trigger" 
+									 data-img="@image.ImageUrl" />
+								<a asp-action="DeleteImage" class="btn btn-danger" asp-route-imageId="@image.Id">
+									<i class="bi bi-trash-fill"></i> Delete
+								</a>
+							</div>
+						}
+					}
+					else
+					{
+						<div class="border p-1 m-2 text-center">
+							<img src="https://placehold.co/500x600/png" class="card-img-top rounded" width="100%"
+								 style="border-radius:5px; border:1px solid #bbb9b9" />
+							<div class="alert alert-warning alert-dismissible fade show text-center mt-3" role="alert" style="font-size: 0.85rem; line-height: 1.2;">
+								<strong>Warning!</strong> Please use the <strong>'Products Image'</strong> file upload below to Updates images.
+								<button type="button" class="btn-close btn-xs" data-bs-dismiss="alert" aria-label="Close"></button>
+							</div>
+						</div>
+					}
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="center-tooltip" style="display: none;">
+	<img id="center-tooltip-image" src="" alt="Tooltip Image" />
+</div>
+
+
+@section Scripts {
+
+	<style>
+		/* Style for the centered tooltip container */
+		#center-tooltip {
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			z-index: 1050; /* Ensure it's above other content */
+			background-color: rgba(0, 0, 0, 0.8); /* Optional: Add a semi-transparent background */
+			padding: 10px;
+			border-radius: 10px;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+			text-align: center;
+		}
+
+		/* Style for the tooltip image */
+		#center-tooltip-image {
+			max-width: 80%; /* Ensure the image doesn't exceed screen width */
+			max-height: 80%; /* Ensure the image doesn't exceed screen height */
+			border-radius: 5px;
+			border: 2px solid #fff; /* Optional: Add a white border */
+		}
+	</style>
+
+	<script>
+			document.addEventListener('DOMContentLoaded', function () {
+			const triggers = document.querySelectorAll('.image-tooltip-trigger');
+			const tooltip = document.getElementById('center-tooltip');
+			const tooltipImage = document.getElementById('center-tooltip-image');
+
+			// Show the tooltip on mouseover
+			triggers.forEach(trigger => {
+				trigger.addEventListener('mouseenter', function () {
+					const imageUrl = this.getAttribute('data-img');
+					tooltipImage.src = imageUrl;
+					tooltip.style.display = 'block';
+				});
+
+				// Hide the tooltip on mouseleave
+				trigger.addEventListener('mouseleave', function () {
+					tooltip.style.display = 'none';
+					tooltipImage.src = '';
+				});
+			});
+		});
+
+	</script>
+
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            plugins: 'anchor autolink charmap codesample emoticons lists media table visualblocks wordcount',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | align lineheight | numlist bullist indent outdent ',
+        });
+    </script>
+
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" />
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+	<script type="text/javascript">
+		$(function () {
+			$("#CategoryId").select2(
+			{
+				dropdownParent: $("#CategoryId").parent(), // Constrain the dropdown within its parent container
+				width: '100%' // Ensure dropdown matches the container's width
+			});
+		});
+	</script>
+}
