@@ -1,77 +1,183 @@
-﻿@* @{
-    ViewData["Title"] = "Home Page";
-}
-
-@model IEnumerable<Kevin.Models.Entities.ProductsEntity>
-
-<div class="row pb-3">
-    @foreach (var product in Model)
-    {
-        <div class="col-lg-3 col-sm-6">
-            <div class="row p-2">
-                <div class="col-12 p-1">
-                    <div class="card border-0 p-3 shadow border-top border-5 rounded">
-                        <img src="@product.ImageUrl" class="card-img-top rounded" />
-                        <div class="card-body pb-0">
-                            <div class="pl-1">
-                                <p class="card-title h5 text-dark opacity-75 text-uppercase text-center">@product.Title</p>
-                                <p class="card-title text-warning text-center">by <b>@product.Author</b></p>
-                            </div>
-
-                            <div class="pl-1">
-                                <p class="text-dark text-opacity-75 text-center mb-0">List Price: <span class="text-decoration-line-through">@product.ListPrice.ToString("c")</span></p>
-                            </div>
-
-                            <div class="pl-1">
-                                <p class="text-dark text-opacity-75 text-center">As low as: <span>@product.Price100.ToString("c")</span></p>
-                            </div>
-                        </div>
-                        <div>
-                            <a asp-action="Details" 
-                            asp-route-productId="@product.Id"
-                            class="btn btn-primary bg-gradient border-0 form-control">
-                                Details
-                            </a>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
-</div> *@
-
-@{
+﻿@{
     ViewData["Title"] = "Home Page";
 }
 
 @model IEnumerable<Kevin.Models.Entities.ProductsEntity>
 
 <style>
+    /* ----------- Floating Sidebar Buttons ----------- */
+    .side-buttons {
+        position: fixed;
+        top: 40%;
+        left: 0;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .side-link {
+        color: white;
+        padding: 6px 10px;
+        margin: 2px 0;
+        text-decoration: none;
+        border-radius: 0 5px 5px 0;
+        font-weight: bold;
+        transition: background 0.3s ease;
+        white-space: nowrap;
+        font-size: 0.8rem;
+        max-width: 130px;
+    }
+
+
+        .side-link:hover {
+            opacity: 0.9;
+            transform: translateX(5px);
+        }
+
+    /* ----------- Product Card Styles ----------- */
     .card:hover {
-        transform: scale(1.05); /* Slightly enlarge the card */
+        transform: scale(1.05);
         transition: transform 0.3s ease, box-shadow 0.3s ease;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
 
     .card-img-top {
-        transition: transform 0.5s ease; /* Smooth image zoom */
+        height: 200px;
+        width: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
     }
 
     .card:hover .card-img-top {
-        transform: scale(1.0); /* Zoom in the image */
+        transform: scale(1.0);
+    }
+
+    .book-title {
+        font-size: 0.95rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        height: 2.4em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        line-height: 1.2em;
+    }
+
+    /* ----------- Carousel Image ----------- */
+    .carousel-inner img {
+        height: 300px;
+        object-fit: cover;
+    }
+
+    .carousel-caption h5 {
+        background-color: rgba(0,0,0,0.6);
+        display: inline-block;
+        padding: 8px 16px;
+        border-radius: 5px;
     }
 </style>
 
+<!-- 🌐 Floating Sidebar Buttons -->
+<div class="side-buttons">
+    <a href="/order-tracking" class="side-link bg-dark">📦 Track Order</a>
+    <a href="/gift-cards" class="side-link bg-dark">🎁 Gift Cards</a>
+    <a href="/reviews" class="side-link bg-dark">💬 Reviews</a>
+    <a href="/blog" class="side-link bg-dark">📚 Blog</a>
+    <a href="/about-us" class="side-link bg-dark">🧑‍💼 About Us</a>
+
+    <!-- logo -->
+    <a href="https://facebook.com" target="_blank" class="side-link" style="background-color: #3b5998;">
+        <i class="fab fa-facebook-f me-2"></i> Facebook
+    </a>
+    <a href="https://instagram.com" target="_blank" class="side-link" style="background-color: #E1306C;">
+        <i class="fab fa-instagram me-2"></i> Instagram
+    </a>
+    <a href="https://tiktok.com" target="_blank" class="side-link" style="background-color: #010101;">
+        <i class="fab fa-tiktok me-2"></i> TikTok
+    </a>
+    <a href="https://linkedin.com" target="_blank" class="side-link" style="background-color: #0077b5;">
+        <i class="fab fa-linkedin-in me-2"></i> LinkedIn
+    </a>
+</div>
+
+
+<!-- 🎯 Eye-Catching Product Carousel -->
+<div id="featuredCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+    <div class="carousel-inner rounded shadow">
+
+        <div class="carousel-item active">
+            <img src="/images/product/banner1.png" class="d-block w-100" alt="Banner 1">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>🔥 Limited Time Deal! Get your favourite books up to 50% off</h5>
+            </div>
+        </div>
+
+        <div class="carousel-item">
+            <img src="/images/product/banner2.jpg" class="d-block w-100" alt="Banner 2">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>🚀 New Arrivals: Discover the latest titles today!</h5>
+            </div>
+        </div>
+
+        <div class="carousel-item">
+            <img src="/images/product/banner3.jpg" class="d-block w-100" alt="Banner 3">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>🌟 Editor’s Picks: Curated must-reads just for you</h5>
+            </div>
+        </div>
+
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#featuredCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#featuredCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+    </button>
+</div>
+
+<!-- 📚 Product Grid -->
 <div class="row pb-3">
+    @{
+        int count = 0;
+        int bannerIndex = 1;
+        int maxBannerIndex = 1; // How many banners you have
+    }
+
     @foreach (var product in Model)
     {
-        <div class="col-lg-3 col-sm-6">
+        if (count > 0 && count % 12 == 0)
+        {
+            <div class="col-12 my-3">
+                <div class="d-flex gap-3 justify-content-center align-items-stretch">
+                    <!-- 60% -->
+                    <img src="@Url.Content($"~/images/product/banner-stream-{bannerIndex}a.png")"
+                         class="rounded shadow"
+                         style="width: 60%; max-height: 350px; object-fit: cover;"
+                         alt="Streaming Ad Left @bannerIndex" />
+
+                    <!-- 40% -->
+                    <img src="@Url.Content($"~/images/product/banner-stream-{bannerIndex}b.png")"
+                         class="rounded shadow"
+                         style="width: 40%; max-height: 350px; object-fit: cover;"
+                         alt="Streaming Ad Right @bannerIndex" />
+                </div>
+            </div>
+
+            bannerIndex++;
+
+            if (bannerIndex > maxBannerIndex)
+            {
+                bannerIndex = 1;
+            }
+        }
+
+        <div class="col-lg-2 col-sm-6 col-6">
             <div class="row p-2">
                 <div class="col-12 p-1">
                     <div class="card border-0 p-3 shadow border-top border-5 rounded">
-                        @* <img src="@product.ImageUrl" class="card-img-top rounded" alt="@product.Title" /> *@
-                        @if (product.ImageUrl != null && product.ImageUrl.Count() > 0)
+                        @if (!string.IsNullOrEmpty(product.ImageUrl))
                         {
                             <img src="@product.ImageUrl" class="card-img-top rounded" />
                         }
@@ -82,16 +188,22 @@
 
                         <div class="card-body pb-0">
                             <div class="pl-1">
-                                <p class="card-title h5 text-dark opacity-75 text-uppercase text-center">@product.Title</p>
+                                <p class="card-title book-title text-dark text-center">@product.Title</p>
                                 <p class="card-title text-warning text-center">by <b>@product.Author</b></p>
                             </div>
 
                             <div class="pl-1">
-                                <p class="text-dark text-opacity-75 text-center mb-0">List Price: <span class="text-decoration-line-through">@product.ListPrice.ToString("c")</span></p>
+                                <p class="text-dark text-opacity-75 text-center mb-0">
+                                    List Price: <span class="text-decoration-line-through">
+                                        @product.ListPrice.ToString("c")
+                                    </span>
+                                </p>
                             </div>
 
                             <div class="pl-1">
-                                <p class="text-dark text-opacity-75 text-center">As low as: <span>@product.Price100.ToString("c")</span></p>
+                                <p class="text-dark text-opacity-75 text-center">
+                                    As low as: <span>@product.Price100.ToString("c")</span>
+                                </p>
                             </div>
                         </div>
                         <div>
@@ -105,5 +217,7 @@
                 </div>
             </div>
         </div>
+
+        count++;
     }
 </div>
