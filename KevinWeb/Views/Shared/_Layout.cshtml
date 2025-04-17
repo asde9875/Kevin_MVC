@@ -25,7 +25,12 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-primary border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">KevinWeb</a>
+                @* <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">KevinWeb</a> *@
+                <a class="navbar-brand d-flex align-items-center" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="@Url.Content($"~/animations/KevinWeb.gif")" alt="KevinWeb Logo" style="height: 70px;" />
+                </a>
+
+
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -73,10 +78,38 @@
                             </a>
                         </li>
                     </ul>
+
+                    <!-- 🔍 Search -->
+                    <form class="d-flex me-3" style="min-width: 600px; max-width: 400px;">
+                        <div class="input-group">
+                            <select class="form-select" style="max-width: 100px;">
+                                <option selected>All</option>
+                                <option>Books</option>
+                                <option>eBooks</option>
+                                <option>Audio</option>
+                            </select>
+                            <input type="text" class="form-control" placeholder="Search KevinWeb..." />
+                            <button class="btn btn-warning" type="submit">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </div>
+                    </form>
                     <partial name="_LoginPartial"/>
                 </div>
             </div>
         </nav>
+        <!-- 🔸 Book-related Navigation Bar (Styled like Amazon) -->
+        <div class="book-nav bg-dark text-white px-4 py-2 d-flex align-items-center gap-4 flex-wrap">
+            <a href="#" class="book-link">Best Sellers</a>
+            <a href="#" class="book-link">New Releases</a>
+            <a href="#" class="book-link">Fiction</a>
+            <a href="#" class="book-link">Non-Fiction</a>
+            <a href="#" class="book-link">Children's Books</a>
+            <a href="#" class="book-link">eBooks</a>
+            <a href="#" class="book-link">Audiobooks</a>
+            <a href="#" class="book-link">Textbooks</a>
+            <a href="#" class="book-link">Comics</a>
+        </div>
     </header>
     <div class="container">
         <main role="main" class="pb-3">
@@ -117,6 +150,27 @@
             background-position: 110% 120%;
             background-repeat: no-repeat;
         }
+
+        .book-nav {
+            font-size: 0.95rem;
+            font-weight: 600;
+            background-color: #131921; /* Amazon 深藍背景 */
+            border-top: 1px solid #232f3e;
+            border-bottom: 1px solid #232f3e;
+        }
+
+        .book-link {
+            color: white;
+            text-decoration: none;
+            padding: 0 0.5rem;
+            transition: color 0.2s ease;
+        }
+
+            .book-link:hover {
+                color: #f08804; /* Amazon 橘色 */
+                text-decoration: underline;
+            }
+
     </style>
 
 
